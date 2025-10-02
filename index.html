@@ -2,41 +2,45 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>信息技术竞赛团队 - 招募新成员</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>信息技术竞赛团队 - 高科技招募平台</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <!-- 配置科技风Tailwind主题 -->
+    <!-- 引入粒子背景库 -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <!-- 配置高科技风格主题 -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        techBlue: '#0070F3',
-                        techDark: '#0F172A',
-                        techLight: '#E0F2FE',
-                        techPurple: '#7C3AED',
+                        techDark: '#050B24',    // 深空黑
+                        techPrimary: '#00F0FF', // 科技蓝
+                        techAccent: '#FF2DCD',  // 霓虹粉
+                        techGlow: '#00FF9D',    // 荧光绿
+                        techGray: '#1E293B',    // 深灰
                     },
                     fontFamily: {
-                        tech: ['"Roboto Mono"', 'monospace'],
+                        future: ['"Exo 2"', '"Rajdhani"', 'sans-serif'],
                     },
                     animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'glow': 'glow 2s ease-in-out infinite alternate',
-                        'type': 'type 3s steps(30, end) forwards',
+                        'pulse-neon': 'pulse 2s ease-in-out infinite alternate',
+                        'float-tech': 'float 5s ease-in-out infinite',
+                        'scan-line': 'scan 6s linear infinite',
+                        'text-fade': 'fade 3s ease-out forwards',
                     },
                     keyframes: {
                         float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
+                            '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-12px) rotate(2deg)' },
                         },
-                        glow: {
-                            '0%': { boxShadow: '0 0 5px rgba(0, 112, 243, 0.5)' },
-                            '100%': { boxShadow: '0 0 20px rgba(0, 112, 243, 0.8), 0 0 30px rgba(124, 58, 237, 0.5)' },
+                        scan: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(100%)' },
                         },
-                        type: {
-                            '0%': { width: '0' },
-                            '100%': { width: '100%' },
+                        fade: {
+                            '0%': { opacity: 0, transform: 'translateY(20px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
                         }
                     }
                 },
@@ -45,109 +49,161 @@
     </script>
     <style type="text/tailwindcss">
         @layer utilities {
-            .text-shadow {
-                text-shadow: 0 0 10px rgba(0, 112, 243, 0.7);
+            .text-glow {
+                text-shadow: 0 0 8px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+            }
+            .border-glow {
+                box-shadow: 0 0 5px currentColor, 0 0 15px currentColor;
             }
             .bg-grid {
-                background-image: linear-gradient(rgba(0, 112, 243, 0.1) 1px, transparent 1px),
-                                linear-gradient(90deg, rgba(0, 112, 243, 0.1) 1px, transparent 1px);
-                background-size: 20px 20px;
+                background-image: 
+                    linear-gradient(rgba(0, 240, 255, 0.1) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0, 240, 255, 0.1) 1px, transparent 1px);
+                background-size: 30px 30px;
             }
-            .mask-type {
-                overflow: hidden;
-                border-right: 2px solid #0070F3;
-                white-space: nowrap;
+            .content-auto {
+                content-visibility: auto;
+            }
+            .clip-tech {
+                clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
             }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;700&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
-<body class="bg-techDark text-white font-tech min-h-screen">
-    <!-- 背景网格动效 -->
-    <div class="fixed inset-0 bg-grid opacity-30 z-0"></div>
+<body class="bg-techDark text-white font-future min-h-screen overflow-x-hidden">
+    <!-- 粒子背景容器 -->
+    <div id="particles-js" class="fixed inset-0 z-0 opacity-70"></div>
     
-    <!-- 导航栏 -->
-    <nav class="fixed top-0 left-0 right-0 bg-techDark/80 backdrop-blur-md z-50 border-b border-techBlue/30">
+    <!-- 网格背景叠加 -->
+    <div class="fixed inset-0 bg-grid z-0 opacity-30"></div>
+    
+    <!-- 扫描线效果 -->
+    <div class="fixed inset-0 pointer-events-none z-10">
+        <div class="absolute w-full h-1 bg-techPrimary/30 animate-scan-line"></div>
+    </div>
+
+    <!-- 导航栏（响应式折叠） -->
+    <nav class="fixed top-0 left-0 right-0 bg-techDark/80 backdrop-blur-lg z-50 border-b border-techPrimary/20 transition-all duration-500">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <i class="fa fa-trophy text-techBlue text-2xl animate-glow"></i>
-                <span class="text-xl font-bold text-techLight">技能竞赛团队</span>
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-techPrimary/20 flex items-center justify-center border border-techPrimary border-glow">
+                    <i class="fa fa-trophy text-techPrimary text-xl"></i>
+                </div>
+                <span class="text-xl md:text-2xl font-bold text-techPrimary text-glow">TECH<span class="text-techAccent">TEAM</span></span>
             </div>
-            <div class="hidden md:flex gap-6">
-                <a href="#honor" class="hover:text-techBlue transition-colors duration-300">团队荣誉</a>
-                <a href="#require" class="hover:text-techBlue transition-colors duration-300">招募要求</a>
-                <a href="#learn" class="hover:text-techBlue transition-colors duration-300">学习内容</a>
-                <a href="#apply" class="hover:text-techBlue transition-colors duration-300">报名方式</a>
+            
+            <!-- 桌面端导航 -->
+            <div class="hidden md:flex gap-8">
+                <a href="#honor" class="text-gray-300 hover:text-techPrimary transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-techPrimary after:transition-all after:duration-300 hover:after:w-full">团队荣誉</a>
+                <a href="#require" class="text-gray-300 hover:text-techAccent transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-techAccent after:transition-all after:duration-300 hover:after:w-full">招募要求</a>
+                <a href="#learn" class="text-gray-300 hover:text-techGlow transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-techGlow after:transition-all after:duration-300 hover:after:w-full">学习内容</a>
+                <a href="#apply" class="text-gray-300 hover:text-techPrimary transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-techPrimary after:transition-all after:duration-300 hover:after:w-full">报名通道</a>
             </div>
-            <button class="md:hidden text-techLight text-xl">
+            
+            <!-- 移动端菜单按钮 -->
+            <button class="md:hidden text-techPrimary text-2xl" id="menuBtn">
                 <i class="fa fa-bars"></i>
             </button>
         </div>
+        
+        <!-- 移动端导航菜单（默认隐藏） -->
+        <div class="md:hidden hidden bg-techGray/90 backdrop-blur-md w-full px-4 py-2 border-t border-techPrimary/20" id="mobileMenu">
+            <a href="#honor" class="block py-3 text-gray-300 hover:text-techPrimary border-b border-techGray">团队荣誉</a>
+            <a href="#require" class="block py-3 text-gray-300 hover:text-techAccent border-b border-techGray">招募要求</a>
+            <a href="#learn" class="block py-3 text-gray-300 hover:text-techGlow border-b border-techGray">学习内容</a>
+            <a href="#apply" class="block py-3 text-gray-300 hover:text-techPrimary">报名通道</a>
+        </div>
     </nav>
 
-    <!-- 英雄区 -->
-    <header class="pt-32 pb-20 px-4 relative z-10">
-        <div class="container mx-auto max-w-4xl text-center">
-            <div class="mask-type mx-auto mb-6 text-3xl md:text-4xl font-bold text-techLight animate-type">
-                荣誉团队，招贤纳士
+    <!-- 英雄区（多端适配） -->
+    <header class="pt-32 pb-24 px-4 relative z-20">
+        <div class="container mx-auto max-w-5xl text-center">
+            <!-- 动态标题 -->
+            <div class="mb-6 opacity-0 animate-text-fade" style="animation-delay: 0.2s">
+                <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-4">
+                    <span class="text-techPrimary text-glow">荣誉团队</span>
+                    <span class="text-white">·</span>
+                    <span class="text-techAccent text-glow">招贤纳士</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300">世界技能大赛银牌团队 · 备战新赛季</p>
             </div>
-            <h1 class="text-4xl md:text-6xl font-bold text-techBlue mb-8 text-shadow">
-                世界技能大赛银牌团队
-            </h1>
-            <p class="text-lg md:text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
-                与顶尖选手同行，实现自我飞跃，在技能大赛的舞台上绽放光芒
-            </p>
-            <a href="#apply" class="inline-block bg-techBlue hover:bg-techBlue/80 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 animate-glow">
-                立即报名 <i class="fa fa-arrow-right ml-2"></i>
-            </a>
             
-            <!-- 悬浮奖杯动画 -->
-            <div class="mt-16 flex justify-center">
-                <div class="w-32 h-32 md:w-48 md:h-48 animate-float">
-                    <i class="fa fa-trophy text-yellow-400 text-6xl md:text-8xl" style="text-shadow: 0 0 20px rgba(250, 204, 21, 0.7);"></i>
+            <!-- 动态标语 -->
+            <div class="max-w-3xl mx-auto mb-12 opacity-0 animate-text-fade" style="animation-delay: 0.5s">
+                <p class="text-lg md:text-xl text-gray-400 leading-relaxed">
+                    与顶尖选手同行，探索前沿技术，在技能大赛的舞台上<br class="md:hidden">绽放你的科技光芒
+                </p>
+            </div>
+            
+            <!-- 悬浮图标组 -->
+            <div class="flex justify-center gap-8 mb-16 opacity-0 animate-text-fade" style="animation-delay: 0.8s">
+                <div class="w-14 h-14 md:w-18 md:h-18 animate-float-tech">
+                    <i class="fa fa-code text-techPrimary text-3xl md:text-4xl text-glow"></i>
+                </div>
+                <div class="w-14 h-14 md:w-18 md:h-18 animate-float-tech" style="animation-delay: 0.5s">
+                    <i class="fa fa-trophy text-yellow-400 text-3xl md:text-4xl text-glow"></i>
+                </div>
+                <div class="w-14 h-14 md:w-18 md:h-18 animate-float-tech" style="animation-delay: 1s">
+                    <i class="fa fa-users text-techAccent text-3xl md:text-4xl text-glow"></i>
                 </div>
             </div>
+            
+            <!-- 报名按钮 -->
+            <a href="#apply" class="inline-block px-8 py-3 md:px-10 md:py-4 bg-transparent border-2 border-techPrimary text-techPrimary text-glow font-medium rounded-sm hover:bg-techPrimary/10 transition-all duration-300 animate-pulse-neon border-glow opacity-0 animate-text-fade" style="animation-delay: 1.1s">
+                立即报名 <i class="fa fa-arrow-right ml-2"></i>
+            </a>
         </div>
     </header>
 
     <!-- 团队荣誉区 -->
-    <section id="honor" class="py-20 px-4 relative z-10">
-        <div class="container mx-auto max-w-5xl">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-techLight">
-                <span class="text-techBlue">#</span> 团队荣誉
-            </h2>
+    <section id="honor" class="py-20 px-4 relative z-20">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16 opacity-0 animate-text-fade" style="animation-delay: 0.2s">
+                <h2 class="text-2xl md:text-4xl font-bold mb-4">
+                    <span class="text-techGlow text-glow">#</span> 团队荣誉
+                </h2>
+                <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-techGlow to-transparent mx-auto"></div>
+            </div>
             
+            <!-- 荣誉卡片网格（响应式） -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- 荣誉卡片1 -->
-                <div class="bg-techDark/50 backdrop-blur-sm border border-techBlue/20 rounded-xl p-6 hover:border-techBlue/50 transition-all duration-300 hover:shadow-lg hover:shadow-techBlue/10">
-                    <div class="w-12 h-12 bg-techBlue/20 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fa fa-globe text-techBlue text-xl"></i>
+                <div class="bg-techGray/40 backdrop-blur-sm border border-techPrimary/20 rounded-sm p-6 md:p-8 hover:border-techPrimary hover:bg-techGray/60 transition-all duration-500 opacity-0 animate-text-fade" style="animation-delay: 0.4s">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-techPrimary/20 rounded-sm flex items-center justify-center mb-6 border border-techPrimary/30">
+                        <i class="fa fa-globe text-techPrimary text-2xl md:text-3xl text-glow"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 text-techLight">世界级别奖项</h3>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3 text-techPrimary">世界级别奖项</h3>
                     <p class="text-gray-300">
-                        世界职业院校技能大赛“新一代信息技术”赛项争夺赛 <span class="text-yellow-400 font-bold">银奖</span>
+                        世界职业院校技能大赛<br>
+                        <span class="text-white font-medium">"新一代信息技术"</span>赛项<br>
+                        <span class="text-yellow-400 text-glow">银奖</span>
                     </p>
                 </div>
                 
                 <!-- 荣誉卡片2 -->
-                <div class="bg-techDark/50 backdrop-blur-sm border border-techBlue/20 rounded-xl p-6 hover:border-techBlue/50 transition-all duration-300 hover:shadow-lg hover:shadow-techBlue/10">
-                    <div class="w-12 h-12 bg-techPurple/20 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fa fa-link text-techPurple text-xl"></i>
+                <div class="bg-techGray/40 backdrop-blur-sm border border-techAccent/20 rounded-sm p-6 md:p-8 hover:border-techAccent hover:bg-techGray/60 transition-all duration-500 opacity-0 animate-text-fade" style="animation-delay: 0.6s">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-techAccent/20 rounded-sm flex items-center justify-center mb-6 border border-techAccent/30">
+                        <i class="fa fa-link text-techAccent text-2xl md:text-3xl text-glow"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 text-techLight">省级一等奖</h3>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3 text-techAccent">省级一等奖</h3>
                     <p class="text-gray-300">
-                        “区块链技术”赛项 <span class="text-green-400 font-bold">多年省级一等奖</span>，技术实力持续领先
+                        "区块链技术"赛项<br>
+                        <span class="text-white font-medium">多年蝉联省级一等奖</span><br>
+                        技术实力持续领先
                     </p>
                 </div>
                 
                 <!-- 荣誉卡片3 -->
-                <div class="bg-techDark/50 backdrop-blur-sm border border-techBlue/20 rounded-xl p-6 hover:border-techBlue/50 transition-all duration-300 hover:shadow-lg hover:shadow-techBlue/10">
-                    <div class="w-12 h-12 bg-techBlue/20 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fa fa-mobile text-techBlue text-xl"></i>
+                <div class="bg-techGray/40 backdrop-blur-sm border border-techGlow/20 rounded-sm p-6 md:p-8 hover:border-techGlow hover:bg-techGray/60 transition-all duration-500 opacity-0 animate-text-fade" style="animation-delay: 0.8s">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-techGlow/20 rounded-sm flex items-center justify-center mb-6 border border-techGlow/30">
+                        <i class="fa fa-mobile text-techGlow text-2xl md:text-3xl text-glow"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 text-techLight">省级一等奖</h3>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3 text-techGlow">省级一等奖</h3>
                     <p class="text-gray-300">
-                        “移动应用开发”赛项 <span class="text-green-400 font-bold">省级一等奖</span>，实战能力突出
+                        "移动应用开发"赛项<br>
+                        <span class="text-white font-medium">实战能力突出</span><br>
+                        多次斩获省级荣誉
                     </p>
                 </div>
             </div>
@@ -155,54 +211,58 @@
     </section>
 
     <!-- 招募要求区 -->
-    <section id="require" class="py-20 px-4 bg-techDark/80 relative z-10">
-        <div class="container mx-auto max-w-5xl">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-techLight">
-                <span class="text-techBlue">#</span> 我们期待这样的你
-            </h2>
+    <section id="require" class="py-20 px-4 bg-techGray/20 relative z-20">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16 opacity-0 animate-text-fade" style="animation-delay: 0.2s">
+                <h2 class="text-2xl md:text-4xl font-bold mb-4">
+                    <span class="text-techAccent text-glow">#</span> 我们期待这样的你
+                </h2>
+                <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-techAccent to-transparent mx-auto"></div>
+            </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- 要求卡片1 -->
-                <div class="flex gap-4 items-start">
-                    <div class="w-10 h-10 bg-techBlue/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                        <i class="fa fa-bolt text-techBlue"></i>
+            <!-- 要求列表（响应式） -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 max-w-4xl mx-auto">
+                <!-- 要求1 -->
+                <div class="flex gap-4 items-start opacity-0 animate-text-fade" style="animation-delay: 0.4s">
+                    <div class="w-10 h-10 bg-techAccent/20 rounded-sm flex items-center justify-center flex-shrink-0 mt-1 border border-techAccent/30">
+                        <i class="fa fa-bolt text-techAccent text-xl text-glow"></i>
                     </div>
                     <div>
-                        <h3 class="text-xl font-bold mb-2 text-techLight">有毅力，有决心</h3>
-                        <p class="text-gray-300">备赛之路充满挑战，拒绝半途而废，能坚持完成高强度训练与学习</p>
+                        <h3 class="text-xl font-bold mb-2 text-techAccent">有毅力，有决心</h3>
+                        <p class="text-gray-300">备赛之路充满挑战，拒绝半途而废，能坚持完成高强度技术训练与学习任务</p>
                     </div>
                 </div>
                 
-                <!-- 要求卡片2 -->
-                <div class="flex gap-4 items-start">
-                    <div class="w-10 h-10 bg-techBlue/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                        <i class="fa fa-check-circle text-techBlue"></i>
+                <!-- 要求2 -->
+                <div class="flex gap-4 items-start opacity-0 animate-text-fade" style="animation-delay: 0.5s">
+                    <div class="w-10 h-10 bg-techPrimary/20 rounded-sm flex items-center justify-center flex-shrink-0 mt-1 border border-techPrimary/30">
+                        <i class="fa fa-check-circle text-techPrimary text-xl text-glow"></i>
                     </div>
                     <div>
-                        <h3 class="text-xl font-bold mb-2 text-techLight">态度端正，不投机取巧</h3>
-                        <p class="text-gray-300">脚踏实地追求真才实学，重视基础能力培养，拒绝捷径思维</p>
+                        <h3 class="text-xl font-bold mb-2 text-techPrimary">态度端正，不投机取巧</h3>
+                        <p class="text-gray-300">脚踏实地追求真才实学，重视技术基础构建，拒绝捷径思维与敷衍态度</p>
                     </div>
                 </div>
                 
-                <!-- 要求卡片3 -->
-                <div class="flex gap-4 items-start">
-                    <div class="w-10 h-10 bg-techBlue/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                        <i class="fa fa-book text-techBlue"></i>
+                <!-- 要求3 -->
+                <div class="flex gap-4 items-start opacity-0 animate-text-fade" style="animation-delay: 0.6s">
+                    <div class="w-10 h-10 bg-techGlow/20 rounded-sm flex items-center justify-center flex-shrink-0 mt-1 border border-techGlow/30">
+                        <i class="fa fa-book text-techGlow text-xl text-glow"></i>
                     </div>
                     <div>
-                        <h3 class="text-xl font-bold mb-2 text-techLight">自学能力强</h3>
-                        <p class="text-gray-300">学习领悟能力突出，能主动探索前沿技术，自主掌握新知识与新工具</p>
+                        <h3 class="text-xl font-bold mb-2 text-techGlow">自学能力强</h3>
+                        <p class="text-gray-300">学习领悟能力突出，能主动探索前沿技术领域，自主掌握新知识与工具</p>
                     </div>
                 </div>
                 
-                <!-- 要求卡片4 -->
-                <div class="flex gap-4 items-start">
-                    <div class="w-10 h-10 bg-techBlue/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                        <i class="fa fa-users text-techBlue"></i>
+                <!-- 要求4 -->
+                <div class="flex gap-4 items-start opacity-0 animate-text-fade" style="animation-delay: 0.7s">
+                    <div class="w-10 h-10 bg-techAccent/20 rounded-sm flex items-center justify-center flex-shrink-0 mt-1 border border-techAccent/30">
+                        <i class="fa fa-users text-techAccent text-xl text-glow"></i>
                     </div>
                     <div>
-                        <h3 class="text-xl font-bold mb-2 text-techLight">尊重师长，团结队友</h3>
-                        <p class="text-gray-300">具备良好团队协作精神，服从团队安排，能与队友高效配合完成任务</p>
+                        <h3 class="text-xl font-bold mb-2 text-techAccent">尊重师长，团结队友</h3>
+                        <p class="text-gray-300">具备良好团队协作精神，服从团队安排，能与队友高效配合完成技术任务</p>
                     </div>
                 </div>
             </div>
@@ -210,104 +270,119 @@
     </section>
 
     <!-- 学习内容区 -->
-    <section id="learn" class="py-20 px-4 relative z-10">
-        <div class="container mx-auto max-w-5xl">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-techLight">
-                <span class="text-techBlue">#</span> 你将重点学习
-            </h2>
+    <section id="learn" class="py-20 px-4 relative z-20">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16 opacity-0 animate-text-fade" style="animation-delay: 0.2s">
+                <h2 class="text-2xl md:text-4xl font-bold mb-4">
+                    <span class="text-techGlow text-glow">#</span> 你将重点学习
+                </h2>
+                <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-techGlow to-transparent mx-auto"></div>
+                <p class="text-gray-400 mt-4">系统指导 + 实战项目 + 1对1答疑，全方位提升技术能力</p>
+            </div>
             
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
-                <!-- 技术标签1 -->
-                <div class="bg-techDark/50 border border-techBlue/20 rounded-lg p-4 text-center hover:border-techBlue hover:bg-techBlue/10 transition-all duration-300">
-                    <i class="fa fa-linux text-techLight text-2xl mb-2"></i>
-                    <p class="text-sm md:text-base">Linux 操作系统</p>
+            <!-- 技术标签网格（响应式） -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6 max-w-5xl mx-auto">
+                <!-- 技术1 -->
+                <div class="bg-techGray/30 backdrop-blur-sm border border-techPrimary/20 rounded-sm p-4 text-center hover:border-techPrimary hover:bg-techGray/50 transition-all duration-300 opacity-0 animate-text-fade" style="animation-delay: 0.4s">
+                    <i class="fa fa-linux text-techPrimary text-2xl md:text-3xl mb-3 text-glow"></i>
+                    <p class="text-sm md:text-base">Linux 系统</p>
                 </div>
                 
-                <!-- 技术标签2 -->
-                <div class="bg-techDark/50 border border-techBlue/20 rounded-lg p-4 text-center hover:border-techBlue hover:bg-techBlue/10 transition-all duration-300">
-                    <i class="fa fa-coffee text-techLight text-2xl mb-2"></i>
+                <!-- 技术2 -->
+                <div class="bg-techGray/30 backdrop-blur-sm border border-techAccent/20 rounded-sm p-4 text-center hover:border-techAccent hover:bg-techGray/50 transition-all duration-300 opacity-0 animate-text-fade" style="animation-delay: 0.5s">
+                    <i class="fa fa-coffee text-techAccent text-2xl md:text-3xl mb-3 text-glow"></i>
                     <p class="text-sm md:text-base">Java 编程</p>
                 </div>
                 
-                <!-- 技术标签3 -->
-                <div class="bg-techDark/50 border border-techBlue/20 rounded-lg p-4 text-center hover:border-techBlue hover:bg-techBlue/10 transition-all duration-300">
-                    <i class="fa fa-code text-techLight text-2xl mb-2"></i>
+                <!-- 技术3 -->
+                <div class="bg-techGray/30 backdrop-blur-sm border border-techGlow/20 rounded-sm p-4 text-center hover:border-techGlow hover:bg-techGray/50 transition-all duration-300 opacity-0 animate-text-fade" style="animation-delay: 0.6s">
+                    <i class="fa fa-html5 text-techGlow text-2xl md:text-3xl mb-3 text-glow"></i>
                     <p class="text-sm md:text-base">Web 前端</p>
                 </div>
                 
-                <!-- 技术标签4 -->
-                <div class="bg-techDark/50 border border-techBlue/20 rounded-lg p-4 text-center hover:border-techBlue hover:bg-techBlue/10 transition-all duration-300">
-                    <i class="fa fa-vuejs text-techLight text-2xl mb-2"></i>
+                <!-- 技术4 -->
+                <div class="bg-techGray/30 backdrop-blur-sm border border-techPrimary/20 rounded-sm p-4 text-center hover:border-techPrimary hover:bg-techGray/50 transition-all duration-300 opacity-0 animate-text-fade" style="animation-delay: 0.7s">
+                    <i class="fa fa-vuejs text-techPrimary text-2xl md:text-3xl mb-3 text-glow"></i>
                     <p class="text-sm md:text-base">Vue.js 框架</p>
                 </div>
                 
-                <!-- 技术标签5 -->
-                <div class="bg-techDark/50 border border-techBlue/20 rounded-lg p-4 text-center hover:border-techBlue hover:bg-techBlue/10 transition-all duration-300">
-                    <i class="fa fa-cogs text-techLight text-2xl mb-2"></i>
+                <!-- 技术5 -->
+                <div class="bg-techGray/30 backdrop-blur-sm border border-techAccent/20 rounded-sm p-4 text-center hover:border-techAccent hover:bg-techGray/50 transition-all duration-300 opacity-0 animate-text-fade" style="animation-delay: 0.8s">
+                    <i class="fa fa-cogs text-techAccent text-2xl md:text-3xl mb-3 text-glow"></i>
                     <p class="text-sm md:text-base">SpringBoot</p>
                 </div>
                 
-                <!-- 技术标签6 -->
-                <div class="bg-techDark/50 border border-techBlue/20 rounded-lg p-4 text-center hover:border-techBlue hover:bg-techBlue/10 transition-all duration-300">
-                    <i class="fa fa-link text-techLight text-2xl mb-2"></i>
+                <!-- 技术6 -->
+                <div class="bg-techGray/30 backdrop-blur-sm border border-techGlow/20 rounded-sm p-4 text-center hover:border-techGlow hover:bg-techGray/50 transition-all duration-300 opacity-0 animate-text-fade" style="animation-delay: 0.9s">
+                    <i class="fa fa-link text-techGlow text-2xl md:text-3xl mb-3 text-glow"></i>
                     <p class="text-sm md:text-base">Solidity</p>
                 </div>
-            </div>
-            
-            <!-- 技术学习说明 -->
-            <div class="mt-12 bg-techDark/50 backdrop-blur-sm border border-techBlue/20 rounded-xl p-6 md:p-8 max-w-3xl mx-auto">
-                <p class="text-gray-300 text-center">
-                    团队将提供<span class="text-techBlue font-bold">系统指导+实战项目+1对1答疑</span>，从基础到进阶，全方位提升你的技术能力，为参赛做好充分准备
-                </p>
             </div>
         </div>
     </section>
 
-    <!-- 报名方式区 -->
-    <section id="apply" class="py-20 px-4 bg-techDark/80 relative z-10">
-        <div class="container mx-auto max-w-5xl">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-techLight">
-                <span class="text-techBlue">#</span> 报名与选拔方式
-            </h2>
+    <!-- 报名通道区 -->
+    <section id="apply" class="py-20 px-4 bg-techGray/20 relative z-20">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16 opacity-0 animate-text-fade" style="animation-delay: 0.2s">
+                <h2 class="text-2xl md:text-4xl font-bold mb-4">
+                    <span class="text-techPrimary text-glow">#</span> 报名通道
+                </h2>
+                <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-techPrimary to-transparent mx-auto"></div>
+            </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <!-- 报名内容（响应式分栏） -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center max-w-4xl mx-auto">
                 <!-- 报名步骤 -->
-                <div>
-                    <div class="mb-10">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-8 h-8 bg-techBlue rounded-full flex items-center justify-center font-bold">1</div>
-                            <h3 class="text-xl font-bold text-techLight">意向报名</h3>
+                <div class="opacity-0 animate-text-fade" style="animation-delay: 0.4s">
+                    <div class="space-y-8">
+                        <!-- 步骤1 -->
+                        <div class="relative pl-10">
+                            <div class="absolute left-0 top-1 w-8 h-8 bg-techPrimary/20 rounded-sm flex items-center justify-center border border-techPrimary border-glow">
+                                <span class="text-techPrimary font-bold">01</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 text-techPrimary">意向报名</h3>
+                            <p class="text-gray-300">扫描右侧二维码，加入招募QQ群（群号：781689666）</p>
                         </div>
-                        <p class="text-gray-300 pl-11">
-                            符合要求的同学，扫描右侧二维码加入招募QQ群，入群后将备注改为“年级+专业+姓名”
-                        </p>
+                        
+                        <!-- 步骤2 -->
+                        <div class="relative pl-10">
+                            <div class="absolute left-0 top-1 w-8 h-8 bg-techAccent/20 rounded-sm flex items-center justify-center border border-techAccent border-glow">
+                                <span class="text-techAccent font-bold">02</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 text-techAccent">修改备注</h3>
+                            <p class="text-gray-300">入群后将备注改为“年级+专业+姓名”，便于团队识别</p>
+                        </div>
+                        
+                        <!-- 步骤3 -->
+                        <div class="relative pl-10">
+                            <div class="absolute left-0 top-1 w-8 h-8 bg-techGlow/20 rounded-sm flex items-center justify-center border border-techGlow border-glow">
+                                <span class="text-techGlow font-bold">03</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 text-techGlow">备赛考核</h3>
+                            <p class="text-gray-300">通过初步筛选后参与集体备赛学习，最终综合考核确定入选名单</p>
+                        </div>
                     </div>
                     
-                    <div>
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-8 h-8 bg-techBlue rounded-full flex items-center justify-center font-bold">2</div>
-                            <h3 class="text-xl font-bold text-techLight">集体备赛与考核</h3>
-                        </div>
-                        <p class="text-gray-300 pl-11">
-                            通过初步筛选的同学将参与集体备赛学习，完成指定学习任务后进行综合考核，最终确定入选名单
-                        </p>
-                    </div>
-                    
-                    <!-- 群号信息 -->
-                    <div class="mt-12 bg-techDark/50 border border-techBlue/20 rounded-lg p-4 pl-11">
+                    <!-- 移动端群号显示 -->
+                    <div class="mt-10 bg-techGray/40 border border-techPrimary/20 rounded-sm p-4 text-center md:hidden">
                         <p class="text-gray-300">
-                            <i class="fa fa-qq text-techBlue mr-2"></i> QQ群号：<span class="text-techLight font-bold">781689666</span>
+                            <i class="fa fa-qq text-techPrimary mr-2"></i> QQ群号：<span class="text-techPrimary font-bold text-glow">781689666</span>
                         </p>
                     </div>
                 </div>
                 
                 <!-- 二维码区域 -->
-                <div class="flex justify-center">
-                    <div class="bg-white p-4 rounded-lg animate-glow">
-                        <!-- 此处嵌入QQ群二维码（群号：781689666），实际使用时可替换为真实图片链接 -->
-                        <img src="https://sfsdjsdf.oss-cn-beijing.aliyuncs.com/imagezhaomu.png" alt="信息技术竞赛团队招募QQ群二维码" class="w-64 h-64 object-contain">
-                        <p class="text-center mt-4 text-techDark font-bold">
-                            扫描二维码加入备赛群
+                <div class="flex justify-center opacity-0 animate-text-fade" style="animation-delay: 0.6s">
+                    <div class="bg-techDark p-6 rounded-sm border border-techPrimary/50 border-glow animate-float-tech">
+                        <!-- 嵌入指定二维码链接 -->
+                        <img src="https://sfsdjsdf.oss-cn-beijing.aliyuncs.com/imagezhaomu.png" 
+                             alt="信息技术竞赛团队招募QQ群二维码" 
+                             class="w-56 h-56 md:w-64 md:h-64 object-contain border border-techPrimary/30 p-2">
+                        <p class="text-center mt-4 text-white font-medium">扫描二维码加入备赛群</p>
+                        <!-- 网页端群号显示 -->
+                        <p class="text-center mt-2 text-techPrimary text-glow hidden md:block">
+                            QQ群号：781689666
                         </p>
                     </div>
                 </div>
@@ -316,61 +391,138 @@
     </section>
 
     <!-- 底部区域 -->
-    <footer class="py-8 px-4 border-t border-techBlue/20 relative z-10">
-        <div class="container mx-auto max-w-5xl text-center">
-            <div class="flex justify-center items-center gap-2 mb-4">
-                <i class="fa fa-trophy text-techBlue text-xl"></i>
-                <h3 class="text-xl font-bold text-techLight">新一代信息技术竞赛团队</h3>
+    <footer class="py-10 px-4 border-t border-techPrimary/20 relative z-20">
+        <div class="container mx-auto max-w-6xl text-center">
+            <div class="flex justify-center items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-full bg-techPrimary/20 flex items-center justify-center border border-techPrimary border-glow">
+                    <i class="fa fa-trophy text-techPrimary text-lg"></i>
+                </div>
+                <h3 class="text-xl font-bold">
+                    <span class="text-techPrimary text-glow">新一代信息技术竞赛团队</span>
+                </h3>
             </div>
-           
+            <p class="text-gray-500 text-sm mb-6">
+                携手共进 · 再创佳绩 | 咨询：团队指导老师（工作日 9:00-17:00）
+            </p>
+            <div class="flex justify-center gap-6 text-gray-400">
+                <a href="#" class="hover:text-techPrimary transition-colors"><i class="fa fa-github text-xl"></i></a>
+                <a href="#" class="hover:text-techAccent transition-colors"><i class="fa fa-weixin text-xl"></i></a>
+                <a href="#" class="hover:text-techGlow transition-colors"><i class="fa fa-envelope text-xl"></i></a>
+            </div>
         </div>
     </footer>
 
     <!-- 回到顶部按钮 -->
-    <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 bg-techBlue rounded-full flex items-center justify-center text-white shadow-lg opacity-0 invisible transition-all duration-300 z-50">
+    <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 bg-techDark border border-techPrimary text-techPrimary rounded-sm flex items-center justify-center shadow-lg opacity-0 invisible transition-all duration-300 z-50 hover:bg-techPrimary/10 border-glow">
         <i class="fa fa-arrow-up"></i>
     </button>
 
-    <!-- JavaScript 交互逻辑 -->
+    <!-- 交互逻辑 -->
     <script>
-        // 回到顶部按钮
-        const backToTopBtn = document.getElementById('backToTop');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 500) {
-                backToTopBtn.classList.remove('opacity-0', 'invisible');
-                backToTopBtn.classList.add('opacity-100', 'visible');
-            } else {
-                backToTopBtn.classList.remove('opacity-100', 'visible');
-                backToTopBtn.classList.add('opacity-0', 'invisible');
-            }
-        });
-        backToTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+        // 粒子背景初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": "#00F0FF" },
+                    "shape": { "type": "circle" },
+                    "opacity": { "value": 0.5, "random": true },
+                    "size": { "value": 3, "random": true },
+                    "line_linked": { 
+                        "enable": true, 
+                        "distance": 150, 
+                        "color": "#00F0FF", 
+                        "opacity": 0.2, 
+                        "width": 1 
+                    },
+                    "move": { 
+                        "enable": true, 
+                        "speed": 1, 
+                        "direction": "none", 
+                        "random": true, 
+                        "straight": false, 
+                        "out_mode": "out", 
+                        "bounce": false 
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": { "enable": true, "mode": "grab" },
+                        "onclick": { "enable": true, "mode": "push" },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": { "distance": 140, "line_linked": { "opacity": 0.5 } },
+                        "push": { "particles_nb": 4 }
+                    }
+                },
+                "retina_detect": true
+            });
 
-        // 导航栏滚动效果
-        const nav = document.querySelector('nav');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                nav.classList.add('border-b', 'border-techBlue/30');
-                nav.classList.remove('border-b-0');
-            } else {
-                nav.classList.remove('border-b', 'border-techBlue/30');
-                nav.classList.add('border-b-0');
-            }
-        });
+            // 移动端菜单切换
+            const menuBtn = document.getElementById('menuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
 
-        // 平滑滚动
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth'
-                    });
+            // 回到顶部按钮
+            const backToTopBtn = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 500) {
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                    backToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopBtn.classList.remove('opacity-100', 'visible');
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
                 }
+
+                // 导航栏滚动效果
+                const nav = document.querySelector('nav');
+                if (window.scrollY > 100) {
+                    nav.classList.add('py-2', 'shadow-lg', 'shadow-techPrimary/10');
+                    nav.classList.remove('py-3');
+                } else {
+                    nav.classList.add('py-3');
+                    nav.classList.remove('py-2', 'shadow-lg', 'shadow-techPrimary/10');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    // 移动端关闭菜单
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // 元素滚动动画触发
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('opacity-100', 'translate-y-0');
+                        entry.target.classList.remove('opacity-0', 'translate-y-10');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            // 初始化需要动画的元素
+            document.querySelectorAll('.animate-text-fade').forEach(el => {
+                el.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+                observer.observe(el);
             });
         });
     </script>
