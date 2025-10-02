@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信息技术竞赛团队 - 招募新成员</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 配置科技风Tailwind主题 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        techBlue: '#0070F3',
+                        techDark: '#0F172A',
+                        techLight: '#E0F2FE',
+                        techPurple: '#7C3AED',
+                    },
+                    fontFamily: {
+                        tech: ['"Roboto Mono"', 'monospace'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'type': 'type 3s steps(30, end) forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px rgba(0, 112, 243, 0.5)' },
+                            '100%': { boxShadow: '0 0 20px rgba(0, 112, 243, 0.8), 0 0 30px rgba(124, 58, 237, 0.5)' },
+                        },
+                        type: {
+                            '0%': { width: '0' },
+                            '100%': { width: '100%' },
+                        }
+                    }
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 0 10px rgba(0, 112, 243, 0.7);
+            }
+            .bg-grid {
+                background-image: linear-gradient(rgba(0, 112, 243, 0.1) 1px, transparent 1px),
+                                linear-gradient(90deg, rgba(0, 112, 243, 0.1) 1px, transparent 1px);
+                background-size: 20px 20px;
+            }
+            .mask-type {
+                overflow: hidden;
+                border-right: 2px solid #0070F3;
+                white-space: nowrap;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-techDark text-white font-tech min-h-screen">
+    <!-- 背景网格动效 -->
+    <div class="fixed inset-0 bg-grid opacity-30 z-0"></div>
+    
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 right-0 bg-techDark/80 backdrop-blur-md z-50 border-b border-techBlue/30">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fa fa-trophy text-techBlue text-2xl animate-glow"></i>
+                <span class="text-xl font-bold text-techLight">技能竞赛团队</span>
+            </div>
+            <div class="hidden md:flex gap-6">
+                <a href="#honor" class="hover:text-techBlue transition-colors duration-300">团队荣誉</a>
+                <a href="#require" class="hover:text-techBlue transition-colors duration-300">招募要求</a>
+                <a href="#learn" class="hover:text-techBlue transition-colors duration-300">学习内容</a>
+                <a href="#apply" class="hover:text-techBlue transition-colors duration-300">报名方式</a>
+            </div>
+            <button class="md:hidden text-techLight text-xl">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 英雄区 -->
+    <header class="pt-32 pb-20 px-4 relative z-10">
+        <div class="container mx-auto max-w-4xl text-center">
+            <div class="mask-type mx-auto mb-6 text-3xl md:text-4xl font-bold text-techLight animate-type">
+                荣誉团队，招贤纳士
+            </div>
+            <h1 class="text-4xl md:text-6xl font-bold text-techBlue mb-8 text-shadow">
+                世界技能大赛银牌团队
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+                与顶尖选手同行，实现自我飞跃，在技能大赛的舞台上绽放光芒
+            </p>
+            <a href="#apply" class="inline-block bg-techBlue hover:bg-techBlue/80 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 animate-glow">
+                立即报名 <i class="fa fa-arrow-right ml-2"></i>
+            </a>
+            
+            <!-- 悬浮奖杯动画 -->
+            <div class="mt-16 flex justify-center">
+                <div class="w-32 h-32 md:w-48 md:h-48 animate-float">
+                    <i class="fa fa-trophy text-yellow-400 text-6xl md:text-8xl" style="text-shadow: 0 0 20px rgba(250, 204, 21, 0.7);"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 团队荣誉区 -->
+    <section id="honor" class="py-20 px-4 relative z-10">
+        <div class="container mx-auto max-w-5xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-techLight">
+                <span class="text-techBlue">#</span> 团队荣誉
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- 荣誉卡片1 -->
+                <div class="bg-techDark/50 backdrop-blur-sm border border-techBlue/20 rounded-xl p-6 hover:border-techBlue/50 transition-all duration-300 hover:shadow-lg hover:shadow-techBlue/10">
+                    <div class="w-12 h-12 bg-techBlue/20 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fa fa-globe text-techBlue text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-techLight">世界级别奖项</h3>
+                    <p class="text-gray-300">
+                        世界职业院校技能大赛“新一代信息技术”赛项争夺赛 <span class="text-yellow-400 font-bold">银奖</span>
+                    </p>
+                </div>
+                
+                <!-- 荣誉卡片2 -->
+                <div class="bg-techDark/50 backdrop-blur-sm border border-techBlue/20 rounded-xl p-6 hover:border-techBlue/50 transition-all duration-300 hover:shadow-lg hover:shadow-techBlue/10">
+                    <div class="w-12 h-12 bg-techPurple/20 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fa fa-link text-techPurple text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-techLight">省级一等奖</h3>
+                    <p class="text-gray-300">
+                        “区块链技术”赛项 <span class="text-green-400 font-bold">多年省级一等奖</span>，技术实力持续领先
+                    </p>
+                </div>
+                
+                <!-- 荣誉卡片3 -->
+                <div class="bg-techDark/50 backdrop-blur-sm border border-techBlue/20 rounded-xl p-6 hover:border-techBlue/50 transition-all duration-300 hover:shadow-lg hover:shadow-techBlue/10">
+                    <div class="w-12 h-12 bg-techBlue/20 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fa fa-mobile text-techBlue text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-techLight">省级一等奖</h3>
+                    <p class="text-gray-300">
+                        “移动应用开发”赛项 <span class="text-green-400 font-bold">省级一等奖</span>，实战能力突出
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 招募要求区 -->
+    <section id="require" class="py-20 px-4 bg-techDark/80 relative z-10">
+        <div class="container mx-auto max-w-5xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-techLight">
+                <span class="text-techBlue">#</span> 我们期待这样的你
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 要求卡片1 -->
+                <div class="flex gap-4 items-start">
+                    <div class="w-10 h-10 bg-techBlue/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <i class="fa fa-bolt text-techBlue"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2 text-techLight">有毅力，有决心</h3>
+                        <p class="text-gray-300">备赛之路充满挑战，拒绝半途而废，能坚持完成高强度训练与学习</p>
+                    </div>
+                </div>
+                
+                <!-- 要求卡片2 -->
+                <div class="flex gap-4 items-start">
+                    <div class="w-10 h-10 bg-techBlue/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <i class="fa fa-check-circle text-techBlue"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2 text-techLight">态度端正，不投机取巧</h3>
+                        <p class="text-gray-300">脚踏实地追求真才实学，重视基础能力培养，拒绝捷径思维</p>
+                    </div>
+                </div>
+                
+                <!-- 要求卡片3 -->
+                <div class="flex gap-4 items-start">
+                    <div class="w-10 h-10 bg-techBlue/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <i class="fa fa-book text-techBlue"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2 text-techLight">自学能力强</h3>
+                        <p class="text-gray-300">学习领悟能力突出，能主动探索前沿技术，自主掌握新知识与新工具</p>
+                    </div>
+                </div>
+                
+                <!-- 要求卡片4 -->
+                <div class="flex gap-4 items-start">
+                    <div class="w-10 h-10 bg-techBlue/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <i class="fa fa-users text-techBlue"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2 text-techLight">尊重师长，团结队友</h3>
+                        <p class="text-gray-300">具备良好团队协作精神，服从团队安排，能与队友高效配合完成任务</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 学习内容区 -->
+    <section id="learn" class="py-20 px-4 relative z-10">
+        <div class="container mx-auto max-w-5xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-techLight">
+                <span class="text-techBlue">#</span> 你将重点学习
+            </h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+                <!-- 技术标签1 -->
+                <div class="bg-techDark/50 border border-techBlue/20 rounded-lg p-4 text-center hover:border-techBlue hover:bg-techBlue/10 transition-all duration-300">
+                    <i class="fa fa-linux text-techLight text-2xl mb-2"></i>
+                    <p class="text-sm md:text-base">Linux 操作系统</p>
+                </div>
+                
+                <!-- 技术标签2 -->
+                <div class="bg-techDark/50 border border-techBlue/20 rounded-lg p-4 text-center hover:border-techBlue hover:bg-techBlue/10 transition-all duration-300">
+                    <i class="fa fa-coffee text-techLight text-2xl mb-2"></i>
+                    <p class="text-sm md:text-base">Java 编程</p>
+                </div>
+                
+                <!-- 技术标签3 -->
+                <div class="bg-techDark/50 border border-techBlue/20 rounded-lg p-4 text-center hover:border-techBlue hover:bg-techBlue/10 transition-all duration-300">
+                    <i class="fa fa-code text-techLight text-2xl mb-2"></i>
+                    <p class="text-sm md:text-base">Web 前端</p>
+                </div>
+                
+                <!-- 技术标签4 -->
+                <div class="bg-techDark/50 border border-techBlue/20 rounded-lg p-4 text-center hover:border-techBlue hover:bg-techBlue/10 transition-all duration-300">
+                    <i class="fa fa-vuejs text-techLight text-2xl mb-2"></i>
+                    <p class="text-sm md:text-base">Vue.js 框架</p>
+                </div>
+                
+                <!-- 技术标签5 -->
+                <div class="bg-techDark/50 border border-techBlue/20 rounded-lg p-4 text-center hover:border-techBlue hover:bg-techBlue/10 transition-all duration-300">
+                    <i class="fa fa-cogs text-techLight text-2xl mb-2"></i>
+                    <p class="text-sm md:text-base">SpringBoot</p>
+                </div>
+                
+                <!-- 技术标签6 -->
+                <div class="bg-techDark/50 border border-techBlue/20 rounded-lg p-4 text-center hover:border-techBlue hover:bg-techBlue/10 transition-all duration-300">
+                    <i class="fa fa-link text-techLight text-2xl mb-2"></i>
+                    <p class="text-sm md:text-base">Solidity</p>
+                </div>
+            </div>
+            
+            <!-- 技术学习说明 -->
+            <div class="mt-12 bg-techDark/50 backdrop-blur-sm border border-techBlue/20 rounded-xl p-6 md:p-8 max-w-3xl mx-auto">
+                <p class="text-gray-300 text-center">
+                    团队将提供<span class="text-techBlue font-bold">系统指导+实战项目+1对1答疑</span>，从基础到进阶，全方位提升你的技术能力，为参赛做好充分准备
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 报名方式区 -->
+    <section id="apply" class="py-20 px-4 bg-techDark/80 relative z-10">
+        <div class="container mx-auto max-w-5xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-techLight">
+                <span class="text-techBlue">#</span> 报名与选拔方式
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <!-- 报名步骤 -->
+                <div>
+                    <div class="mb-10">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-8 h-8 bg-techBlue rounded-full flex items-center justify-center font-bold">1</div>
+                            <h3 class="text-xl font-bold text-techLight">意向报名</h3>
+                        </div>
+                        <p class="text-gray-300 pl-11">
+                            符合要求的同学，扫描右侧二维码加入招募QQ群，入群后将备注改为“年级+专业+姓名”
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-8 h-8 bg-techBlue rounded-full flex items-center justify-center font-bold">2</div>
+                            <h3 class="text-xl font-bold text-techLight">集体备赛与考核</h3>
+                        </div>
+                        <p class="text-gray-300 pl-11">
+                            通过初步筛选的同学将参与集体备赛学习，完成指定学习任务后进行综合考核，最终确定入选名单
+                        </p>
+                    </div>
+                    
+                    <!-- 群号信息 -->
+                    <div class="mt-12 bg-techDark/50 border border-techBlue/20 rounded-lg p-4 pl-11">
+                        <p class="text-gray-300">
+                            <i class="fa fa-qq text-techBlue mr-2"></i> QQ群号：<span class="text-techLight font-bold">781689666</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- 二维码区域 -->
+                <div class="flex justify-center">
+                    <div class="bg-white p-4 rounded-lg animate-glow">
+                        <!-- 此处嵌入QQ群二维码（群号：781689666），实际使用时可替换为真实图片链接 -->
+                        <img src="https://q.qlogo.cn/qqapp/100474126/781689666/100" alt="信息技术竞赛团队招募QQ群二维码" class="w-64 h-64 object-contain">
+                        <p class="text-center mt-4 text-techDark font-bold">
+                            扫描二维码加入备赛群
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 底部区域 -->
+    <footer class="py-8 px-4 border-t border-techBlue/20 relative z-10">
+        <div class="container mx-auto max-w-5xl text-center">
+            <div class="flex justify-center items-center gap-2 mb-4">
+                <i class="fa fa-trophy text-techBlue text-xl"></i>
+                <h3 class="text-xl font-bold text-techLight">新一代信息技术竞赛团队</h3>
+            </div>
+            <p class="text-gray-400 text-sm">
+                携手共进，再创佳绩 | 咨询电话：XXX-XXXXXXX（工作时间：周一至周五 9:00-17:00）
+            </p>
+        </div>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 bg-techBlue rounded-full flex items-center justify-center text-white shadow-lg opacity-0 invisible transition-all duration-300 z-50">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript 交互逻辑 -->
+    <script>
+        // 回到顶部按钮
+        const backToTopBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTopBtn.classList.remove('opacity-0', 'invisible');
+                backToTopBtn.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopBtn.classList.remove('opacity-100', 'visible');
+                backToTopBtn.classList.add('opacity-0', 'invisible');
+            }
+        });
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 导航栏滚动效果
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                nav.classList.add('border-b', 'border-techBlue/30');
+                nav.classList.remove('border-b-0');
+            } else {
+                nav.classList.remove('border-b', 'border-techBlue/30');
+                nav.classList.add('border-b-0');
+            }
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
